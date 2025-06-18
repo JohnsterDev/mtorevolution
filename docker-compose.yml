@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: mtor-postgres
+    environment:
+      POSTGRES_DB: mtor_evolution
+      POSTGRES_USER: mtor_user
+      POSTGRES_PASSWORD: mtor_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mtor-network
+    restart: unless-stopped
+
+  # Backend Application
+  backend:
+    build: .
+    container_name: mtor-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/mtor_evolution
+      DATABASE_USERNAME: mtor_user
+      DATABASE_PASSWORD: mtor_password
+      DATABASE_DRIVER: org.postgresql.Driver
+      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      DDL_AUTO: update
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      FRONTEND_URL: http://localhost:5173
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - mtor-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+
+networks:
+  mtor-network:
+    driver: bridge

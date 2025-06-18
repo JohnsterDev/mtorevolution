@@ -1,0 +1,18 @@
+# Production Environment Variables for Hostinger
+# IMPORTANT: Update these values with your actual production URLs
+
+# Frontend URL (your Hostinger domain)
+VITE_API_BASE_URL=https://your-domain.com/api/v1
+
+# Environment
+VITE_NODE_ENV=production
+
+# CORS Configuration
+VITE_CORS_ENABLED=true
+
+# Supabase Configuration (if using Supabase)
+VITE_SUPABASE_URL=https://sexklcnutdnmrwvarlwk.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNleGtsY251dGRubXJ3dmFybHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAxMDMwMTEsImV4cCI6MjA2NTY3OTAxMX0.mtGfYofkzgQ2GIZAMXRPqpbNs0puBdzqGlqKuHa7KYk
+
+# Health Check
+VITE_HEALTH_CHECK_INTERVAL=30000
